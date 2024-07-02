@@ -27,9 +27,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Form {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("When do you want to wake up?")
-                        .font(.headline)
+                Section("When do you want to wake up?") {
                     DatePicker(
                         "Please enter a time",
                         selection: $wakeUp,
@@ -37,7 +35,6 @@ struct ContentView: View {
                     )
                     .labelsHidden()
                 }
-                
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Desired amount of sleep")
                         .font(.headline)
@@ -48,15 +45,10 @@ struct ContentView: View {
                         step: 0.35
                     )
                 }
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Daily coffee intake")
-                        .font(.headline)
-                    Stepper(
-                        "^[\(coffeeAmound) cup](inflect: true)",
-                        value: $coffeeAmound,
-                        in: 1...10
-                    )
+                Picker("Daily coffee intake", selection: $coffeeAmound) {
+                    ForEach(1..<11) {
+                        Text("^[\($0) cup](inflect: true)")
+                    }
                 }
             }
             .navigationTitle("BetterRest")
@@ -71,7 +63,7 @@ struct ContentView: View {
             }
         }
     }
-
+    
     func calculateBedtime() {
         do {
             let config = MLModelConfiguration()
